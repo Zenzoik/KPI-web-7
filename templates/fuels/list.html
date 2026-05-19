@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}ПММ | ЛР7 Облік ПММ{% endblock %}
+
+{% block content %}
+<section class="page-head with-action">
+    <div>
+        <h1>Складські позиції ПММ</h1>
+        <p>Сутність FuelItem. Адміністратор може створювати, редагувати і видаляти записи.</p>
+    </div>
+    {% if current_user.is_authenticated and current_user.role == "admin" %}
+    <a class="primary-btn compact-btn" href="{{ url_for('fuel_create') }}">Додати позицію</a>
+    {% endif %}
+</section>
+
+<section class="panel table-panel">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Назва</th>
+                <th>Постачальник</th>
+                <th>Тип</th>
+                <th>Залишок</th>
+                <th>Ціна</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fuel in fuels %}
+            <tr>
+                <td>{{ fuel.id }}</td>
+                <td>{{ fuel.name }}</td>
+                <td>{{ fuel.supplier }}</td>
+                <td>{{ fuel.fuel_type.name }}</td>
+                <td>{{ fuel.quantity_liters }}</td>
+                <td>{{ fuel.unit_price }}</td>
+                <td class="actions">
+                    <a href="{{ url_for('fuel_detail', fuel_id=fuel.id) }}">Перегляд</a>
+                    {% if current_user.is_authenticated and current_user.role == "admin" %}
+                    <a href="{{ url_for('fuel_edit', fuel_id=fuel.id) }}">Редагувати</a>
+                    <form action="{{ url_for('fuel_delete', fuel_id=fuel.id) }}" method="post">
+                        <button type="submit" class="link-danger">Видалити</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

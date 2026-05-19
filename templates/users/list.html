@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Користувачі | ЛР7 Облік ПММ{% endblock %}
+
+{% block content %}
+<section class="page-head with-action">
+    <div>
+        <h1>Користувачі</h1>
+        <p>Сутність User. Доступ до сторінки має тільки адміністратор.</p>
+    </div>
+    <a class="primary-btn compact-btn" href="{{ url_for('user_create') }}">Додати користувача</a>
+</section>
+
+<section class="panel table-panel">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Логін</th>
+                <th>ПІБ</th>
+                <th>Роль</th>
+                <th>Операцій</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.full_name }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.issue_records|length }}</td>
+                <td class="actions">
+                    <a href="{{ url_for('user_edit', user_id=user.id) }}">Редагувати</a>
+                    <form action="{{ url_for('user_delete', user_id=user.id) }}" method="post">
+                        <button type="submit" class="link-danger">Видалити</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

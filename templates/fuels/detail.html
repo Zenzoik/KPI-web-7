@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}{{ fuel.name }} | ЛР7 Облік ПММ{% endblock %}
+
+{% block content %}
+<section class="detail-card panel">
+    <div>
+        <h1>{{ fuel.name }}</h1>
+        <table class="compact-table">
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <td>{{ fuel.id }}</td>
+                </tr>
+                <tr>
+                    <th>Тип</th>
+                    <td>{{ fuel.fuel_type.name }}</td>
+                </tr>
+                <tr>
+                    <th>Постачальник</th>
+                    <td>{{ fuel.supplier }}</td>
+                </tr>
+                <tr>
+                    <th>Залишок</th>
+                    <td>{{ fuel.quantity_liters }} л</td>
+                </tr>
+                <tr>
+                    <th>Ціна</th>
+                    <td>{{ fuel.unit_price }} грн/л</td>
+                </tr>
+                <tr>
+                    <th>Опис</th>
+                    <td>{{ fuel.description }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <aside class="detail-actions">
+        <h2>Операція видачі</h2>
+        {% if current_user.is_authenticated %}
+        <form class="stack-form" action="{{ url_for('issue_create', fuel_id=fuel.id) }}" method="post">
+            {{ form.hidden_tag() }}
+            <label>
+                {{ form.amount_liters.label.text }}
+                {{ form.amount_liters(min=1, max=fuel.quantity_liters, value=20) }}
+            </label>
+            <label>
+                {{ form.destination.label.text }}
+                {{ form.destination(placeholder="Наприклад, трактор МТЗ-82") }}
+            </label>
+            {{ form.submit(class="primary-btn") }}
+        </form>
+        {% else %}
+        <a class="secondary-btn" href="{{ url_for('login') }}">Увійти для видачі</a>
+        {% endif %}
+
+        {% if current_user.is_authenticated and current_user.role == "admin" %}
+        <h2>Дії адміністратора</h2>
+        <a class="secondary-btn" href="{{ url_for('fuel_edit', fuel_id=fuel.id) }}">Редагувати</a>
+        <form action="{{ url_for('fuel_delete', fuel_id=fuel.id) }}" method="post">
+            <button type="submit" class="danger-btn">Видалити</button>
+        </form>
+        {% endif %}
+    </aside>
+</section>
+{% endblock %}

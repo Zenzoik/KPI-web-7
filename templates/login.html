@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Вхід | ЛР7 Облік ПММ{% endblock %}
+
+{% block content %}
+<section class="form-wrapper narrow">
+    <div class="panel">
+        <h1>Вхід у систему</h1>
+        <table class="compact-table">
+            <tbody>
+                <tr>
+                    <th>admin</th>
+                    <td>admin123</td>
+                </tr>
+                <tr>
+                    <th>operator</th>
+                    <td>user123</td>
+                </tr>
+            </tbody>
+        </table>
+        <form class="stack-form" method="post">
+            {{ form.hidden_tag() }}
+            <label>
+                {{ form.username.label.text }}
+                {{ form.username() }}
+            </label>
+            <label>
+                {{ form.password.label.text }}
+                {{ form.password() }}
+            </label>
+            {{ form.submit(class="primary-btn") }}
+        </form>
+    </div>
+</section>
+{% endblock %}

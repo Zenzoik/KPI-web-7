@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Головна | ЛР7 Облік ПММ{% endblock %}
+
+{% block content %}
+<section class="page-head">
+    <h1>Лабораторна робота 7</h1>
+    <p>Розширення ЛР6: аутентифікація, панель адміністратора, Config-клас, Flask-Mail.</p>
+</section>
+
+<section class="panel">
+    <h2>Що додано порівняно з ЛР6</h2>
+    <table class="compact-table">
+        <tbody>
+            <tr>
+                <th>Flask-Login</th>
+                <td>Аутентифікація через <code>login_user</code>, <code>logout_user</code>, <code>@login_required</code>. Модель User успадковує <code>UserMixin</code>.</td>
+            </tr>
+            <tr>
+                <th>Config клас</th>
+                <td>Параметри застосунку винесено у клас <code>Config</code> → <code>DevelopmentConfig</code> у файлі <code>app/config.py</code>. <code>create_app()</code> приймає клас конфігурації.</td>
+            </tr>
+            <tr>
+                <th>Панель адміністратора</th>
+                <td>Окрема сторінка <code>/admin</code> зі статистикою та посиланнями на управління всіма сутностями.</td>
+            </tr>
+            <tr>
+                <th>Flask-Mail</th>
+                <td>Надсилання email-звіту складських залишків зі сторінки <code>/admin/send-report</code>.</td>
+            </tr>
+            <tr>
+                <th>extensions.py</th>
+                <td>Екземпляри <code>LoginManager</code> та <code>Mail</code> винесено в окремий файл, щоб уникнути циклічних імпортів.</td>
+            </tr>
+            <tr>
+                <th>Cookie</th>
+                <td>Остання відвідана сторінка: <code>{{ last_page }}</code>.</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="panel">
+    <h2>Демо-акаунти</h2>
+    <p><strong>admin / admin123</strong> – повний доступ + панель адміністратора.</p>
+    <p><strong>operator / user123</strong> – перегляд ПММ та створення операцій видачі.</p>
+    <div class="actions">
+        <a class="primary-btn" href="{{ url_for('login') }}">Увійти</a>
+        <a class="secondary-btn" href="{{ url_for('fuels') }}">Склад ПММ</a>
+        <a class="secondary-btn" href="{{ url_for('fuel_types') }}">Типи ПММ</a>
+    </div>
+</section>
+
+<section class="panel table-panel">
+    <h2>Поточні позиції ПММ</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Назва</th>
+                <th>Тип</th>
+                <th>Залишок, л</th>
+                <th>Дія</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fuel in fuels %}
+            <tr>
+                <td>{{ fuel.id }}</td>
+                <td>{{ fuel.name }}</td>
+                <td>{{ fuel.fuel_type.name }}</td>
+                <td>{{ fuel.quantity_liters }}</td>
+                <td><a href="{{ url_for('fuel_detail', fuel_id=fuel.id) }}">Відкрити</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

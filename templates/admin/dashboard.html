@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Панель адміністратора | ЛР7{% endblock %}
+
+{% block content %}
+<section class="page-head">
+    <h1>Панель адміністратора</h1>
+    <p>Повний доступ до даних та акаунтів користувачів.</p>
+</section>
+
+<section class="panel">
+    <h2>Статистика</h2>
+    <table class="compact-table">
+        <tbody>
+            <tr>
+                <th>Користувачів</th>
+                <td>{{ stats.users }}</td>
+            </tr>
+            <tr>
+                <th>Типів ПММ</th>
+                <td>{{ stats.fuel_types }}</td>
+            </tr>
+            <tr>
+                <th>Позицій ПММ</th>
+                <td>{{ stats.fuels }}</td>
+            </tr>
+            <tr>
+                <th>Операцій видачі</th>
+                <td>{{ stats.issues }}</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="panel">
+    <h2>Керування</h2>
+    <div class="actions">
+        <a class="primary-btn" href="{{ url_for('users') }}">Користувачі</a>
+        <a class="secondary-btn" href="{{ url_for('fuels') }}">ПММ</a>
+        <a class="secondary-btn" href="{{ url_for('fuel_types') }}">Типи ПММ</a>
+        <a class="secondary-btn" href="{{ url_for('issues') }}">Операції</a>
+    </div>
+</section>
+
+<section class="panel">
+    <h2>Надсилання звіту</h2>
+    <p>Відправити поточні залишки ПММ на email.</p>
+    <a class="primary-btn" href="{{ url_for('send_report') }}">Надіслати звіт</a>
+</section>
+{% endblock %}

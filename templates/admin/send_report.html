@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Надіслати звіт | ЛР7{% endblock %}
+
+{% block content %}
+<section class="form-wrapper narrow">
+    <div class="panel">
+        <h1>Надіслати звіт на email</h1>
+        <p>Форма відправить поточні складські залишки ПММ на вказану адресу.</p>
+        <form class="stack-form" method="post">
+            {{ form.hidden_tag() }}
+            <label>
+                {{ form.email.label.text }}
+                {{ form.email(placeholder="example@gmail.com") }}
+            </label>
+            {{ form.submit(class="primary-btn") }}
+        </form>
+        <p><a href="{{ url_for('admin_dashboard') }}">← Назад до панелі</a></p>
+    </div>
+</section>
+{% endblock %}

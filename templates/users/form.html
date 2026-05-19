@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} | ЛР7 Облік ПММ{% endblock %}
+
+{% block content %}
+<section class="form-wrapper">
+    <div class="panel">
+        <h1>{{ title }}</h1>
+        <form class="stack-form" method="post">
+            {{ form.hidden_tag() }}
+            <label>{{ form.username.label.text }} {{ form.username() }}</label>
+            <label>{{ form.full_name.label.text }} {{ form.full_name() }}</label>
+            <label>{{ form.password.label.text }} {{ form.password() }}</label>
+            <label>{{ form.role.label.text }} {{ form.role() }}</label>
+            {{ form.submit(class="primary-btn") }}
+        </form>
+    </div>
+</section>
+{% endblock %}

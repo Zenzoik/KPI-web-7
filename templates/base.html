@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ЛР7 Облік ПММ{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="brand">
+            <a href="{{ url_for('index') }}">ЛР7: Облік ПММ</a>
+            <p>Flask + Flask-Login + Flask-Mail</p>
+        </div>
+        <nav class="nav-links">
+            <a href="{{ url_for('index') }}">Головна</a>
+            <a href="{{ url_for('fuels') }}">ПММ</a>
+            <a href="{{ url_for('fuel_types') }}">Типи ПММ</a>
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('issues') }}">Операції</a>
+            {% endif %}
+            {% if current_user.is_authenticated and current_user.role == "admin" %}
+            <a href="{{ url_for('admin_dashboard') }}">Адмін панель</a>
+            {% endif %}
+        </nav>
+        <div class="auth-box">
+            {% if current_user.is_authenticated %}
+            <span>{{ current_user.full_name }}: {{ current_user.role }}</span>
+            <form action="{{ url_for('logout') }}" method="post">
+                <button type="submit" class="secondary-btn">Вийти</button>
+            </form>
+            {% else %}
+            <a class="primary-btn" href="{{ url_for('login') }}">Увійти</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="page">
+        {% for message in get_flashed_messages() %}
+        <section class="flash">{{ message }}</section>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
