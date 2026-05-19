@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, PasswordField, SelectField, StringField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, Email, Length, NumberRange, Optional
+from wtforms.validators import DataRequired, Length, NumberRange, Optional
 
 
 class LoginForm(FlaskForm):
@@ -53,8 +53,3 @@ class IssueCreateForm(FlaskForm):
     amount_liters = IntegerField("Обсяг, літри", validators=[DataRequired(), NumberRange(min=1)])
     destination = StringField("Куди видано", validators=[DataRequired(), Length(min=2, max=120)])
     submit = SubmitField("Оформити видачу")
-
-
-class SendReportForm(FlaskForm):
-    email = StringField("Email адреса", validators=[DataRequired(), Email(), Length(max=120)])
-    submit = SubmitField("Надіслати звіт")

@@ -1,17 +1,14 @@
 from flask import flash, make_response, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
-from flask_mail import Message
 
 from app.auth import admin_required, hash_password, verify_password
 from app.database import db
-from app.extensions import mail
 from app.forms import (
     FuelItemForm,
     FuelTypeForm,
     IssueCreateForm,
     IssueRecordForm,
     LoginForm,
-    SendReportForm,
     UserCreateForm,
     UserEditForm,
 )
@@ -286,26 +283,3 @@ def register_routes(app):
         flash("Користувача видалено.")
         return redirect(url_for("users"))
 
-    # ---- Надсилання email-звіту ----
-
-    @app.route("/admin/send-report", methods=["GET", "POST"])
-    @admin_required
-    def send_report():
-        form = SendReportForm()
-        if form.validate_on_submit():
-            fuels = FuelItem.query.order_by(FuelItem.name).all()
-            lines = ["Звіт складських залишків ПММ\n"]
-            for fuel in fuels:
-                lines.append(f"- {fuel.name} ({fuel.fuel_type.name}): {fuel.quantity_liters} л")
-            try:
-                msg = Message(
-                    subject="Звіт ПММ",
-                    recipients=[form.email.data],
-                    body="\n".join(lines),
-                )
-                mail.send(msg)
-                flash(f"Звіт надіслано на {form.email.data}.")
-            except Exception as e:
-                flash(f"Помилка надсилання: {e}")
-            return redirect(url_for("admin_dashboard"))
-        return render_template("admin/send_report.html", form=form)

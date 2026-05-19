@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 
 from app.config import DevelopmentConfig
 from app.database import db
-from app.extensions import login_manager, mail
+from app.extensions import login_manager
 from app.routes import register_routes
 from app.seed import seed_database
 
@@ -25,7 +25,6 @@ def create_app(config_class=DevelopmentConfig):
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
-    mail.init_app(app)
 
     from app.models import User
 
