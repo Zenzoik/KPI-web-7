@@ -3,7 +3,7 @@ import secrets
 from functools import wraps
 
 from flask import flash, redirect, url_for
-from flask_login import current_user, login_required  # noqa: F401 - re-exported for routes.py
+from flask_login import current_user
 
 
 def hash_password(password):
